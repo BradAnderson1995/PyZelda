@@ -1,14 +1,12 @@
-__author__ = 'brad'
-
-import src.engine as engine
-import pygame
 import random
+import pygame
+from zelda import engine
 
 
 class AbstractEnemy(engine.GameObject):
     def __init__(self):
         self.resource_manager = engine.ResourceManager()
-        engine.GameObject.__init__(self, layer=0, handle_collisions=True, solid=True, object_type="enemy")
+        engine.GameObject.__init__(self, layer=0, handle_collisions=True, solid=True, object_type='enemy')
 
 
 class Octorok(AbstractEnemy):
@@ -33,7 +31,7 @@ class Octorok(AbstractEnemy):
         self.solid = True
         self.hitbox = pygame.Rect((0, 0), (16, 16))
 
-        self.object_type = "octorok"
+        self.object_type = 'octorok'
         self._state = WalkingState(self)
         self.speed = 1.0
         self.movement = {0: (self.speed, 0), 1: (0, -self.speed), 2: (-self.speed, 0), 3: (0, self.speed)}
@@ -46,7 +44,7 @@ class Octorok(AbstractEnemy):
 
 class WalkingState(engine.ObjectState):
     def __init__(self, octorok):
-        octorok.state = "WalkingState"
+        octorok.state = 'WalkingState'
         engine.ObjectState.__init__(self)
         # Change animations
         octorok.set_animation(octorok.animations[octorok.facing], 0)
@@ -66,7 +64,7 @@ class WalkingState(engine.ObjectState):
                 if game_object.solid:
                     octorok.position = previous_position
                     self.walking = False
-                if game_object.object_type == "camera":
+                if game_object.object_type == 'camera':
                     if game_scene.check_contain_object(game_object, octorok):
                         on_screen = True
             if not on_screen:
@@ -108,10 +106,10 @@ class Missile(engine.GameObject):
         self.increment(self.movement[self.direction])
         on_screen = False
         for game_object in game_scene.check_object_collision_objects(self):
-            if game_object.solid and game_object.object_type != "octorok":
+            if game_object.solid and game_object.object_type != 'octorok':
                 self.remove = True
                 game_scene.remove_object(self)
-            if game_object.object_type == "camera":
+            if game_object.object_type == 'camera':
                 if game_scene.check_contain_object(game_object, self):
                     on_screen = True
                     game_scene.remove_object(self)

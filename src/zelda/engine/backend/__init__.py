@@ -1,5 +1,3 @@
-__author__ = 'brad'
-
 import sound
 import graphics
 # import rect

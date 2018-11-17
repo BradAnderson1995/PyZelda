@@ -1,6 +1,7 @@
-__author__ = 'brad'
-
+import logging
 import backend
+
+LOG = logging.getLogger(__name__)
 
 
 class CoordinateSurface(backend.Surface):
@@ -102,8 +103,13 @@ class CoordinateSurface(backend.Surface):
             return False
 
     def increment_object(self, game_object, increment):
-        return self.move_object(game_object, (self.check_position(game_object)[0] + increment[0],
-                                          self.check_position(game_object)[1] + increment[1]))
+        return self.move_object(
+            game_object,
+            (
+                self.check_position(game_object)[0] + increment[0],
+                self.check_position(game_object)[1] + increment[1]
+            )
+        )
 
     def check_position(self, game_object):
         for key in self.coordinate_array.keys():
@@ -114,7 +120,7 @@ class CoordinateSurface(backend.Surface):
     # Convert screen coordinates to game coordinates
     def convert_to_surface_coordinates(self, coordinate):
         if coordinate[0] > self.get_width() or coordinate[1] > self.get_height():
-            print("Cannot  enter values greater than size of surface")
+            LOG.warning('Cannot enter values greater than size of surface')
             return
         game_x_coordinate = (float(self.coordinate_width)/float(self.get_width()))*coordinate[0]
         game_y_coordinate = (float(self.coordinate_height)/float(self.get_height()))*coordinate[1]
@@ -123,19 +129,16 @@ class CoordinateSurface(backend.Surface):
     # Convert game coordinates to screen coordinates
     def convert_to_screen_coordinates(self, coordinate):
         if coordinate[0] > self.coordinate_width or coordinate[1] > self.coordinate_height:
-            print("Cannot  enter values greater than coordinate size of surface")
+            LOG.warning('Cannot enter values greater than coordinate size '
+                        'of surface')
             return
-        screen_x_coordinate = (float(self.get_width())/float(self.coordinate_width))*coordinate[0]
-        screen_y_coordinate = (float(self.get_height())/float(self.coordinate_height))*coordinate[1]
-        # print(str(screen_x_coordinate) + " " + str(screen_y_coordinate))
-        return screen_x_coordinate, screen_y_coordinate
+        screen_x = (float(self.get_width())/float(self.coordinate_width))*coordinate[0]
+        screen_y = (float(self.get_height())/float(self.coordinate_height))*coordinate[1]
+        LOG.debug('Converted screen coordinates %s, %s', screen_x, screen_y)
+        return screen_x, screen_y
 
     def update(self, fill=None, masks=None, invert=False, tint=(0, 0, 0), colorkey=None):
         if self.active:
-            # if fill is None:
-            #     self.fill((0, 0, 0, 0))
-            # else:
-            #     self.fill(fill)
             objects = 0
             drawn_objects = 0
             for layer in self.layers:
@@ -156,7 +159,8 @@ class CoordinateSurface(backend.Surface):
                                     self.draw_object(game_object, invert=invert, tint=tint, colorkey=colorkey)
                                     drawn_objects += 1
                                 objects += 1
-            # print(str(objects) + " tiles and objects in the room, " + str(drawn_objects) + " drawn to screen")
+            LOG.debug('%s tiles and objects in the room %s drawn to screen',
+                      objects, drawn_objects)
 
     # Unusably slow. Don't use except for stills.
     def tint(self, (r, g, b, a)):

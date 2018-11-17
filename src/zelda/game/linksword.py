@@ -1,17 +1,12 @@
-__author__ = 'brad'
-
 import os
-import src.engine as engine
 from pygame import Rect
-
-RESOURCE_DIR = os.path.join(os.path.dirname(__file__),'../../resources/') + '/'
-SPRITE_DIR = RESOURCE_DIR + 'sprite/'
+from zelda import engine, SPRITE_DIR
 
 
 class LinkSword(engine.GameObject):
-    def __init__(self, facing, mode="slash"):
+    def __init__(self, facing, mode='slash'):
         self.resource_manager = engine.ResourceManager()
-        link_sheet = engine.Spritesheet(SPRITE_DIR + "Link.png")
+        link_sheet = engine.Spritesheet(os.path.join(SPRITE_DIR, 'Link.png'))
 
         # Load animations
         self.resource_manager.add_spritesheet_strip_offsets('link_sword_right', link_sheet, (192, 128), 4, 4, (16, 16), 0, 0, (64, 64, 192))
@@ -89,5 +84,5 @@ class LinkSword(engine.GameObject):
     def special_update(self, game_scene):
         for game_object in game_scene.list_objects():
             if game_object.get_global_hitbox().colliderect(self.get_global_hitbox()):
-                if game_object.object_type == "octorok":
+                if game_object.object_type == 'octorok':
                     game_scene.remove_object(game_object)

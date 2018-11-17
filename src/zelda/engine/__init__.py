@@ -1,5 +1,3 @@
-__author__ = 'brad'
-
 # Import engine files
 import coordsurface
 import scene

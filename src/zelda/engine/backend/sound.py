@@ -1,4 +1,3 @@
-__author__ = 'brad'
 import pyaudio
 import wave
 import cStringIO

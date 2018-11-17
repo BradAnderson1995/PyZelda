@@ -1,25 +1,20 @@
-__author__ = 'brad'
-
 import os
-import src.engine as engine
 import pygame
 import effects
 import random
 import linksword
 import specialtiles
-
+from zelda import engine, SPRITE_DIR, SOUND_DIR
 from pygame.locals import *
-
-RESOURCE_DIR = os.path.join(os.path.dirname(__file__),'../../resources/') + '/'
-SPRITE_DIR = RESOURCE_DIR + 'sprite/'
-SOUND_DIR = RESOURCE_DIR + 'sound/'
 
 
 class Link(engine.GameObject):
     def __init__(self, layer=50):
         self.resource_manager = engine.ResourceManager()
-        link_sheet = engine.Spritesheet(SPRITE_DIR + "Link.png")
-        overworld_sheet = engine.Spritesheet(SPRITE_DIR + "OverworldSheet.png")
+        link_path = os.path.join(SPRITE_DIR, 'Link.png')
+        link_sheet = engine.Spritesheet(link_path)
+        world_path = os.path.join(SPRITE_DIR, 'OverworldSheet.png')
+        overworld_sheet = engine.Spritesheet(world_path)
         self.resource_manager.add_spritesheet_strip_offsets('overworld_tiles', overworld_sheet, (1, 1), 600, 24, (16, 16), 1, 1)
 
         # Load animations
@@ -47,7 +42,7 @@ class Link(engine.GameObject):
         self.resource_manager.add_spritesheet_strip_offsets('link_sword_right', link_sheet, (96, 112), 2, 2, (16, 16), 0, 0, (64, 64, 192))
         engine.GameObject.__init__(self, self.resource_manager.get_images('link_walk_down'), layer,
                                    collision_rect=pygame.Rect((3, 4), (10, 11)),
-                                   handle_collisions=True, object_type="player", persistent=True)
+                                   handle_collisions=True, object_type='player', persistent=True)
 
         # Add animations to Link
         self.add_animation('link_walk_up', self.resource_manager.get_images('link_walk_up'))
@@ -74,25 +69,25 @@ class Link(engine.GameObject):
         self.add_animation('link_sword_left', self.resource_manager.get_images('link_sword_left'))
 
         # Group animations
-        self.link_walk = ["link_walk_right", "link_walk_up", "link_walk_left", "link_walk_down"]
-        self.link_push = ["link_push_right", "link_push_up", "link_push_left", "link_push_down"]
-        self.link_shield_walk = ["link_shield_walk_right", "link_shield_walk_up", "link_shield_walk_left", "link_shield_walk_down"]
-        self.link_use_shield = ["link_use_shield_right", "link_use_shield_up", "link_use_shield_left", "link_use_shield_down"]
-        self.link_sword = ["link_sword_right", "link_sword_up", "link_sword_left", "link_sword_down"]
+        self.link_walk = ['link_walk_right', 'link_walk_up', 'link_walk_left', 'link_walk_down']
+        self.link_push = ['link_push_right', 'link_push_up', 'link_push_left', 'link_push_down']
+        self.link_shield_walk = ['link_shield_walk_right', 'link_shield_walk_up', 'link_shield_walk_left', 'link_shield_walk_down']
+        self.link_use_shield = ['link_use_shield_right', 'link_use_shield_up', 'link_use_shield_left', 'link_use_shield_down']
+        self.link_sword = ['link_sword_right', 'link_sword_up', 'link_sword_left', 'link_sword_down']
 
         # Add sounds to Link
-        self.resource_manager.add_sound('link_hop', SOUND_DIR + 'LA_Link_Jump.wav')
-        self.resource_manager.add_sound('link_land', SOUND_DIR + 'LA_Link_Land.wav')
-        self.resource_manager.add_sound('link_shield', SOUND_DIR + 'LA_Shield.wav')
-        self.resource_manager.add_sound('link_fall', SOUND_DIR + 'LA_Link_Fall.wav')
-        self.resource_manager.add_sound('link_sword_1', SOUND_DIR + 'LA_Sword_Slash1.wav')
-        self.resource_manager.add_sound('link_sword_2', SOUND_DIR + 'LA_Sword_Slash2.wav')
-        self.resource_manager.add_sound('link_sword_3', SOUND_DIR + 'LA_Sword_Slash3.wav')
-        self.resource_manager.add_sound('link_sword_4', SOUND_DIR + 'LA_Sword_Slash4.wav')
-        self.resource_manager.add_sound('link_sword_charge', SOUND_DIR + 'LA_Sword_Charge.wav')
-        self.resource_manager.add_sound('link_sword_spin', SOUND_DIR + 'LA_Sword_Spin.wav')
-        self.resource_manager.add_sound('link_sword_tap', SOUND_DIR + 'LA_Sword_Tap.wav')
-        self.resource_manager.add_sound('grass_cut', SOUND_DIR + 'LA_Bush_Cut.wav')
+        self.resource_manager.add_sound('link_hop', os.path.join(SOUND_DIR, 'LA_Link_Jump.wav'))
+        self.resource_manager.add_sound('link_land', os.path.join(SOUND_DIR, 'LA_Link_Land.wav'))
+        self.resource_manager.add_sound('link_shield', os.path.join(SOUND_DIR, 'LA_Shield.wav'))
+        self.resource_manager.add_sound('link_fall', os.path.join(SOUND_DIR, 'LA_Link_Fall.wav'))
+        self.resource_manager.add_sound('link_sword_1', os.path.join(SOUND_DIR, 'LA_Sword_Slash1.wav'))
+        self.resource_manager.add_sound('link_sword_2', os.path.join(SOUND_DIR, 'LA_Sword_Slash2.wav'))
+        self.resource_manager.add_sound('link_sword_3', os.path.join(SOUND_DIR, 'LA_Sword_Slash3.wav'))
+        self.resource_manager.add_sound('link_sword_4', os.path.join(SOUND_DIR, 'LA_Sword_Slash4.wav'))
+        self.resource_manager.add_sound('link_sword_charge', os.path.join(SOUND_DIR, 'LA_Sword_Charge.wav'))
+        self.resource_manager.add_sound('link_sword_spin', os.path.join(SOUND_DIR, 'LA_Sword_Spin.wav'))
+        self.resource_manager.add_sound('link_sword_tap', os.path.join(SOUND_DIR, 'LA_Sword_Tap.wav'))
+        self.resource_manager.add_sound('grass_cut', os.path.join(SOUND_DIR, 'LA_Bush_Cut.wav'))
 
         self.sword_slashes = ['link_sword_1', 'link_sword_2', 'link_sword_3', 'link_sword_4']
 
@@ -101,9 +96,9 @@ class Link(engine.GameObject):
         self.movement = {0: (self.speed, 0), 1: (0, -self.speed), 2: (-self.speed, 0), 3: (0, self.speed)}
         self.direction = 3
         self.facing = 3
-        self.big_grass = ["big_grass", "big_forest_grass"]
-        self.short_grass = ["short_grass", "short_forest_grass"]
-        self.effect_short_grass = ["effect_short_grass", "effect_short_forest_grass"]
+        self.big_grass = ['big_grass', 'big_forest_grass']
+        self.short_grass = ['short_grass', 'short_forest_grass']
+        self.effect_short_grass = ['effect_short_grass', 'effect_short_forest_grass']
         self.in_grass = False
         self.shield = False
         self.left = None
@@ -121,7 +116,7 @@ class Link(engine.GameObject):
         # self.collide = CollidingState()
         # self.shield = ShieldState()
         self._state = WalkingState(self)
-        self.state = "WalkingState"
+        self.state = 'WalkingState'
 
     def update_interactions(self):
         if self.facing == 0:
@@ -184,7 +179,7 @@ class Link(engine.GameObject):
 
 class WalkingState(engine.ObjectState):
     def __init__(self, link):
-        link.state = "WalkingState"
+        link.state = 'WalkingState'
         engine.ObjectState.__init__(self)
         # Change animations
         if not link.shield:
@@ -261,26 +256,26 @@ class WalkingState(engine.ObjectState):
                     for game_object in game_scene.check_object_collision_objects(link):
                         # Regular collisions, stop movement
                         if game_object.solid:
-                            collisions.append("solid")
-                        if "slow" in game_object.properties:
-                            collisions.append("slow")
-                            link.set_speed(float(game_object.properties["slow"]))
-                        if game_object.object_type == "hole":
-                            collisions.append("hole")
-                        if game_object.object_type == "jump":
-                            collisions.append("jump")
+                            collisions.append('solid')
+                        if 'slow' in game_object.properties:
+                            collisions.append('slow')
+                            link.set_speed(float(game_object.properties['slow']))
+                        if game_object.object_type == 'hole':
+                            collisions.append('hole')
+                        if game_object.object_type == 'jump':
+                            collisions.append('jump')
                         # if game_object.object_type == "octorok":
                         #     print("Octorok")
-                    if "solid" in collisions:
+                    if 'solid' in collisions:
                         link.move(previous_position)
                         link._state = CollidingState(link)
-                    elif "jump" in collisions:
+                    elif 'jump' in collisions:
                         link._state = HoppingState(link)
-                    elif "hole" in collisions:
+                    elif 'hole' in collisions:
                         link._state = SlippingState(link)
 
                     #TODO: Fix this
-                    if "slow" not in collisions:
+                    if 'slow' not in collisions:
                         link.set_speed(float(1.25))
 
             # Update and move short grass effect
@@ -308,7 +303,7 @@ class WalkingState(engine.ObjectState):
 
 class CollidingState(engine.ObjectState):
     def __init__(self, link):
-        link.state = "CollidingState"
+        link.state = 'CollidingState'
         engine.ObjectState.__init__(self)
         link.set_animation(link.link_push[link.facing], 0)
         link.controllable = True
@@ -363,8 +358,8 @@ class CollidingState(engine.ObjectState):
                         not_colliding_any = False
 
                     # Stairs
-                    if "slow" in game_object.properties:
-                        link.set_speed(float(game_object.properties["slow"]))
+                    if 'slow' in game_object.properties:
+                        link.set_speed(float(game_object.properties['slow']))
                     else:
                         link.set_speed(float(1.25))
 
@@ -395,12 +390,12 @@ class CollidingState(engine.ObjectState):
 
 class HoppingState(engine.ObjectState):
     def __init__(self, link):
-        link.state = "HoppingState"
+        link.state = 'HoppingState'
         engine.ObjectState.__init__(self)
-        link.set_animation("link_hop_down", 0)
+        link.set_animation('link_hop_down', 0)
         link.controllable = False
         link.animation_counter = 0
-        link.play_sound("link_hop")
+        link.play_sound('link_hop')
         self.hop_frame = 0
         link.animation_speed = 15
         link.rect_offset = (0, 0)
@@ -416,7 +411,7 @@ class HoppingState(engine.ObjectState):
     def update(self, link, game_scene):
         moved = False
         for game_object in game_scene.check_object_collision_objects(link):
-            if game_object.solid or game_object.object_type == "jump":
+            if game_object.solid or game_object.object_type == 'jump':
                 link.increment((0, 1))
                 moved = True
             if self.hop_frame < 3:
@@ -467,7 +462,7 @@ class FallingState(engine.ObjectState):
 
 class ShieldState(engine.ObjectState):
     def __init__(self, link):
-        link.state = "ShieldState"
+        link.state = 'ShieldState'
         engine.ObjectState.__init__(self)
         link.controllable = False
         link.set_animation(link.link_use_shield[link.facing], 0)
@@ -481,7 +476,7 @@ class ShieldState(engine.ObjectState):
         moves = []
         moved = False
         mouse = pygame.mouse.get_pressed()
-        # print(str(mouse))
+        LOG.debug('Mouse: %s', mouse)
         if not mouse[2]:
             link._state = WalkingState(link)
         # Gather movement directions
@@ -529,24 +524,24 @@ class ShieldState(engine.ObjectState):
                     for game_object in game_scene.check_object_collision_objects(link):
                         # Regular collisions, stop movement
                         if game_object.solid:
-                            collisions.append("solid")
-                        if "slow" in game_object.properties:
-                            collisions.append("slow")
-                            link.set_speed(float(game_object.properties["slow"]))
-                        if game_object.object_type == "hole":
-                            collisions.append("hole")
-                        if game_object.object_type == "jump":
-                            collisions.append("jump")
-                    if "solid" in collisions:
+                            collisions.append('solid')
+                        if 'slow' in game_object.properties:
+                            collisions.append('slow')
+                            link.set_speed(float(game_object.properties['slow']))
+                        if game_object.object_type == 'hole':
+                            collisions.append('hole')
+                        if game_object.object_type == 'jump':
+                            collisions.append('jump')
+                    if 'solid' in collisions:
                         link.move(previous_position)
                         # link._state = CollidingState(link)
-                    elif "jump" in collisions:
+                    elif 'jump' in collisions:
                         link._state = HoppingState(link)
-                    elif "hole" in collisions:
+                    elif 'hole' in collisions:
                         link._state = SlippingState(link)
 
-                    #TODO: Fix this
-                    if "slow" in collisions:
+                    # TODO: Fix this
+                    if 'slow' in collisions:
                         link.set_speed(float(1.25))
 
             # Update and move short grass effect
@@ -571,7 +566,7 @@ class ShieldState(engine.ObjectState):
 
 class SwordState(engine.ObjectState):
     def __init__(self, link):
-        link.state = "SwordState"
+        link.state = 'SwordState'
         engine.ObjectState.__init__(self)
         link.set_animation(link.link_sword[link.facing], 0)
         link.animation_counter = 0
@@ -585,7 +580,7 @@ class SwordState(engine.ObjectState):
         link.play_sound(link.sword_slashes[random.randrange(0, 4, 1)])
 
         # Make the sword
-        self.sword = linksword.LinkSword(link.facing, mode="slash")
+        self.sword = linksword.LinkSword(link.facing, mode='slash')
         self.sword.animation_speed = link.animation_speed / 2
         self.inserted = False
         self.sword_positions = [[(0, -16), (12, -12), (16, 0)],
@@ -596,7 +591,6 @@ class SwordState(engine.ObjectState):
 
     def handle_input(self, link, game_scene):
         mouse = pygame.mouse.get_pressed()
-        # print(str(mouse))
         if not mouse[0]:
             self.holding = False
 
@@ -654,8 +648,6 @@ class SwordState(engine.ObjectState):
             if game_object.object_type in link.big_grass or game_object.object_type in link.short_grass:
                 if self.sword.handle_collisions:
                     if game_object.get_global_rect().colliderect(self.sword.get_global_collision_rect()):
-                        # print(str(self.sword.collision_rect[0]) + ", " + str(self.sword.collision_rect[1]) + ", " +
-                        #       str(self.sword.collision_rect[2]) + ", " +str(self.sword.collision_rect[3]))
                         position = game_object.position
                         game_scene.remove_object(game_object)
                         game_scene.insert_object(specialtiles.GroundTile(link.resource_manager), position)
@@ -665,7 +657,7 @@ class SwordState(engine.ObjectState):
 
 class SwordChargeState(engine.ObjectState):
     def __init__(self, link):
-        link.state = "SwordChargeState"
+        link.state = 'SwordChargeState'
         engine.ObjectState.__init__(self)
         if link.shield:
             link.set_animation(link.link_shield_walk[link.facing], 0)
@@ -678,7 +670,7 @@ class SwordChargeState(engine.ObjectState):
         self.frame = 0
         link.animation_speed = link.standard_animation_speed
 
-        self.sword = linksword.LinkSword(link.facing, mode="charge")
+        self.sword = linksword.LinkSword(link.facing, mode='charge')
         self.sword.set_animation_frame(2)
         self.sword_positions = [(12, 0), (0, -12), (-12, 0), (0, 12)]
         self.inserted = False
@@ -721,31 +713,31 @@ class SwordChargeState(engine.ObjectState):
                     for game_object in game_scene.check_object_collision_objects(link):
                         # Regular collisions, stop movement
                         if game_object.solid:
-                            collisions.append("solid")
+                            collisions.append('solid')
                             if move_direction == link.facing:
                                 if game_object.get_global_rect().colliderect(self.sword.get_global_collision_rect()):
                                     stab = True
-                        if "slow" in game_object.properties:
-                            collisions.append("slow")
-                            link.set_speed(float(game_object.properties["slow"]))
-                        if game_object.object_type == "hole":
-                            collisions.append("hole")
-                        if game_object.object_type == "jump":
-                            collisions.append("jump")
-                    if "solid" in collisions:
+                        if 'slow' in game_object.properties:
+                            collisions.append('slow')
+                            link.set_speed(float(game_object.properties['slow']))
+                        if game_object.object_type == 'hole':
+                            collisions.append('hole')
+                        if game_object.object_type == 'jump':
+                            collisions.append('jump')
+                    if 'solid' in collisions:
                         link.move(previous_position)
                         # link._state = CollidingState(link)
-                    elif "jump" in collisions:
+                    elif 'jump' in collisions:
                         if self.inserted:
                             game_scene.remove_object(self.sword)
                         link._state = HoppingState(link)
-                    elif "hole" in collisions:
+                    elif 'hole' in collisions:
                         if self.inserted:
                             game_scene.remove_object(self.sword)
                         link._state = SlippingState(link)
 
                     #TODO: Fix this
-                    if "slow" in collisions:
+                    if 'slow' in collisions:
                         link.set_speed(float(1.25))
 
             if stab and len(moves) == 1:
@@ -796,7 +788,7 @@ class SwordChargeState(engine.ObjectState):
 
 class SwordStabState(engine.ObjectState):
     def __init__(self, link):
-        link.state = "SwordStabState"
+        link.state = 'SwordStabState'
         engine.ObjectState.__init__(self)
         link.controllable = False
         link.animation_frame = 0
@@ -807,11 +799,11 @@ class SwordStabState(engine.ObjectState):
         self.inserted = False
 
         link.set_animation(link.link_sword[link.facing], 1)
-        self.sword = linksword.LinkSword(link.facing, mode="stab")
+        self.sword = linksword.LinkSword(link.facing, mode='stab')
         self.sword_positions = [(12, 0), (0, -12), (-12, 0), (0, 12)]
         self.sword.animation_frame = 2
         self.sword.update_collisions()
-        # print("Stabbing")
+        LOG.debug('Stabbing...')
 
     @staticmethod
     def handle_input(link, game_scene):
@@ -834,18 +826,16 @@ class SwordStabState(engine.ObjectState):
                 if game_object.object_type in link.big_grass:
                     if self.sword.handle_collisions:
                         if game_object.get_global_rect().colliderect(self.sword.get_global_collision_rect()):
-                            # print(str(self.sword.collision_rect[0]) + ", " + str(self.sword.collision_rect[1]) + ", " +
-                            #       str(self.sword.collision_rect[2]) + ", " +str(self.sword.collision_rect[3]))
                             position = game_object.position
                             game_scene.remove_object(game_object)
                             game_scene.insert_object(specialtiles.GroundTile(link.resource_manager), position)
                             game_scene.insert_object_centered(effects.CutGrass(), (position[0]-8, position[1]-8))
-                            collisions.append("big_grass")
+                            collisions.append('big_grass')
                 elif game_object.solid:
-                    collisions.append("solid")
-            if "big_grass" in collisions:
+                    collisions.append('solid')
+            if 'big_grass' in collisions:
                 link.resource_manager.play_sound('grass_cut')
-            elif "solid" in collisions:
+            elif 'solid' in collisions:
                 link.play_sound('link_sword_tap')
             self.stabbed = True
 
@@ -896,7 +886,7 @@ class SwordStabState(engine.ObjectState):
 
 class SwordSpinState(engine.ObjectState):
     def __init__(self, link):
-        link.state = "SwordSpinState"
+        link.state = 'SwordSpinState'
         engine.ObjectState.__init__(self)
         link.controllable = False
         link.animation_frame = 0
@@ -907,7 +897,7 @@ class SwordSpinState(engine.ObjectState):
 
         self.positions = {'up': (0, -16), 'ur': (12, -12), 'right': (16, 0), 'dr': (12, 12),
                           'down': (0, 16), 'dl': (-12, 12), 'left': (-16, 0), 'ul': (-12, -12)}
-        self.sword = linksword.LinkSword(link.facing, mode="spin")
+        self.sword = linksword.LinkSword(link.facing, mode='spin')
         # self.sword.set_animation_frame(2)
         self.sword_positions = [[self.positions['dr'], self.positions['down'], self.positions['dl'], self.positions['left'],
                                  self.positions['ul'], self.positions['up'], self.positions['up'], self.positions['ur'],
@@ -976,8 +966,6 @@ class SwordSpinState(engine.ObjectState):
             if game_object.object_type in link.big_grass or game_object.object_type in link.short_grass:
                 if self.sword.handle_collisions:
                     if game_object.get_global_rect().colliderect(self.sword.get_global_collision_rect()):
-                        # print(str(self.sword.collision_rect[0]) + ", " + str(self.sword.collision_rect[1]) + ", " +
-                        #       str(self.sword.collision_rect[2]) + ", " +str(self.sword.collision_rect[3]))
                         position = game_object.position
                         game_scene.remove_object(game_object)
                         game_scene.insert_object(specialtiles.GroundTile(link.resource_manager), position)

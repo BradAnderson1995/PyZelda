@@ -1,7 +1,8 @@
-__author__ = 'brad'
-
+import logging
 import math
 import pygame
+
+LOG = logging.getLogger(__name__)
 
 
 class Scene(object):
@@ -18,7 +19,8 @@ class Scene(object):
         self.update_all = update_all
         self.handle_all_collisions = handle_all_collisions
 
-    def insert_view(self, surface, key, view_scene_position, view_draw_position=None, fill=None, masks=None,
+    def insert_view(self, surface, key, view_scene_position,
+                    view_draw_position=None, fill=None, masks=None,
                     view_size=None):
         if view_size is None:
             view_size = (surface.coordinate_width, surface.coordinate_height)
@@ -74,7 +76,10 @@ class Scene(object):
             try:
                 other_frame_rect = other_object.images[other_object.current_key][0][other_object.animation_frame].get_rect()
             except IndexError:
-                print(other_object.object_type + " " + other_object.current_key + " " + str(other_object.animation_frame))
+                LOG.exception('Error generating other rect frame: %s %s %s',
+                              other_object.object_type,
+                              other_object.current_key,
+                              other_object.animation_frame)
             moved_object_rect = pygame.Rect((math.floor(position[0]) + game_object._rect_offset[0],
                                              math.floor(position[1]) + game_object._rect_offset[1]),
                                             (game_object.rect.width, game_object.rect.height))
@@ -262,7 +267,10 @@ class Scene(object):
                 try:
                     frame_rect = game_object.images[game_object.current_key][0][game_object.animation_frame].get_rect()
                 except IndexError:
-                    print(game_object.object_type + " " + game_object.current_key + " " + str(game_object.animation_frame))
+                    LOG.error('Error generating rect frame: %s %s %s',
+                              game_object.object_type,
+                              game_object.current_key,
+                              game_object.animation_frame)
                 if game_object.scene_position != game_object.position or game_object.rect != frame_rect:
                     position = game_object.scene_position
                     self.update_touching_objects(game_object)

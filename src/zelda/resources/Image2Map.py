@@ -16,7 +16,7 @@ class TileMap:
         self.TileX, self.TileY = tileX, tileY
 
         # Open the map and find its attributes.
-        print "Opening the map image file: " + file
+        print 'Opening the map image file: ' + file
         self.MapImage = Image.open(file)
         self.MapImageWidth, self.MapImageHeight = self.MapImage.size
         self.Width, self.Height = self.MapImageWidth / self.TileX, self.MapImageHeight / self.TileY
@@ -55,7 +55,7 @@ class TileMap:
         TList = []
         TDict = {}
         progress = -1
-        print "Parsing the Map: "
+        print 'Parsing the Map: '
 
         # Jump through the map image in 8 x 8-tile steps. In each step:
         #  * If the string of the tile is in the dictionary, place its value in map list MList[y][x].
@@ -81,7 +81,7 @@ class TileMap:
                     self.printProgress(progress)
 
         self.printProgress(100)
-        print "Done!"
+        print 'Done!'
 
         return MList, TList, TDict
 
@@ -104,14 +104,14 @@ class TileMap:
         Ymin = min([ h[0] for h in H.keys() ])
         Ymax = max([ h[0] for h in H.keys() ])
 
-        TileImage = Image.new("RGB", (self.TileX * (Xmax - Xmin + 1), self.TileY * (Ymax - Ymin + 1) ) )
+        TileImage = Image.new('RGB', (self.TileX * (Xmax - Xmin + 1), self.TileY * (Ymax - Ymin + 1) ) )
 
         for i in range(Ymin, Ymax + 1):
             for j in range(Xmin, Xmax + 1):
                 if (i,j) in H:
                     box = ( self.TileX * (j - Xmin)    , self.TileY * (i - Ymin), \
                             self.TileX * (j - Xmin + 1), self.TileY * (i - Ymin + 1) ) 
-                    TileImage.paste(self.TileList[H[(i,j)] - 1].convert("RGB"), box)
+                    TileImage.paste(self.TileList[H[(i,j)] - 1].convert('RGB'), box)
 
         return TileImage
 
@@ -131,25 +131,25 @@ class TileMap:
         # Find the number of symbols we need to write down the tile numbers.
         D = len(str(max(H.values())))
 
-        st = ""
+        st = ''
         for i in range(Ymin, Ymax + 1):
             for j in range(Xmin, Xmax + 1):
 
                 if not (i,j) in H:
-                    st = st + "|"
+                    st = st + '|'
                     for k in range(D):
-                        st = st + "."
+                        st = st + '.'
                 else:
                     h = H[(i,j)]
                     d = len(str(h))
 
-                    st = st + "|"
+                    st = st + '|'
                     for k in range(D-d):
-                        st = st + "."
+                        st = st + '.'
 
                     st = st + str(h)
 
-            st = st + "|\n"
+            st = st + '|\n'
 
         print st
 
@@ -191,7 +191,7 @@ class TileMap:
         self.G = networkx.MultiDiGraph(selfloops = False, multiedges = True)
         L = self.MapList
         progress = -1
-        print "Generating the graph: "
+        print 'Generating the graph: '
 
         # Now add for every Cartesian crossing an edge (or a value) in G
         for i in range(len(L) - 1):
@@ -214,7 +214,7 @@ class TileMap:
 
         # Now show 100% progress and say we're done.
         self.printProgress(100)
-        print "Done!"
+        print 'Done!'
 
 
     def growTileMap(self, TileMap, G, posX, posY, curV):
@@ -363,23 +363,23 @@ class TileMap:
 
         return H1
 
-if sys.argv[1] == "--help":
-    print "Usage  : python Image2Map.py [tileX] [tileY] files..."
-    print "Example: python Image2Map.py 8 8 Sewers.png Caves.png"
+if sys.argv[1] == '--help':
+    print 'Usage  : python Image2Map.py [tileX] [tileY] files...'
+    print 'Example: python Image2Map.py 8 8 Sewers.png Caves.png'
 elif len(sys.argv) < 4:
-    print "Error  : You specified too few arguments!\n"
-    print "Usage  : python Image2Map.py [tileX] [tileY] files..."
-    print "Example: python Image2Map.py 8 8 Sewers.png Caves.png"
+    print 'Error  : You specified too few arguments!\n'
+    print 'Usage  : python Image2Map.py [tileX] [tileY] files...'
+    print 'Example: python Image2Map.py 8 8 Sewers.png Caves.png'
 else:
     tileX, tileY = int(sys.argv[1]), int(sys.argv[2])
 
     for file in sys.argv[3:]:
         map = TileMap(file, tileX, tileY)
 
-        tilefile = os.path.splitext(file)[0] + "-Tileset" + ".png"
-        print "Saving the tileset image into the file: " + tilefile
-        map.TileImage.save( tilefile, "PNG" )
+        tilefile = os.path.splitext(file)[0] + '-Tileset' + '.png'
+        print 'Saving the tileset image into the file: ' + tilefile
+        map.TileImage.save( tilefile, 'PNG' )
 
-        print "Pretty-printing the tileset:" + "\n"
+        print 'Pretty-printing the tileset:' + '\n'
         map.printHash(map.FullTileMap)
 

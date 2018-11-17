@@ -1,4 +1,3 @@
-__author__ = 'brad'
 import pygame
 import pyaudio
 import backend

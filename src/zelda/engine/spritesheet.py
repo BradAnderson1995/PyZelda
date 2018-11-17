@@ -1,5 +1,3 @@
-__author__ = 'brad'
-
 import pygame
 
 
@@ -9,7 +7,7 @@ class Spritesheet(object):
             self.sheet = pygame.image.load(filename).convert()
         except pygame.error, message:
             print 'Unable to load spritesheet image:', filename
-            raise SystemExit, message
+            raise SystemExit(message)
 
     # Load image at location
     def image_at(self, rectangle, colorkey=None):
@@ -35,10 +33,10 @@ class Spritesheet(object):
     # Load a stip of images with offsets
     def load_strip_offsets(self, topleft, image_count, per_line, image_size, hor_offset=0, ver_offset=0, colorkey=None):
         rectangle_list = []
-        lines = int(image_count/per_line)
-        even_lines = True
-        if image_count % per_line != 0:
-            even_lines = False
+        lines = int(image_count / per_line)
+        # even_lines = True
+        # if image_count % per_line != 0:
+        #     even_lines = False
         current_topleft = topleft
         for line in xrange(0, lines):
             for image in xrange(0, per_line):

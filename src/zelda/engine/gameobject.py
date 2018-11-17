@@ -1,6 +1,8 @@
-__author__ = 'brad'
+import logging
 import pygame
 import random
+
+LOG = logging.getLogger(__name__)
 
 
 class ObjectState(object):
@@ -76,18 +78,18 @@ class GameObject(pygame.sprite.Sprite, object):
         else:
             self.properties = properties
             for object_property in properties.keys():
-                if object_property == "solid":
+                if object_property == 'solid':
                     # if properties[property] == "True":
                     self.solid = True
                     self.handle_collisions = True
-                if object_property == "handle_collisions":
+                if object_property == 'handle_collisions':
                     self.handle_collisions = True
-                if object_property == "object_type":
+                if object_property == 'object_type':
                     self.object_type = properties[object_property]
-                if object_property == "collision_rect":
+                if object_property == 'collision_rect':
                     crect_list = map(int, self.properties[object_property].split(','))
                     self.collision_rect = pygame.Rect(crect_list)
-                if object_property == "hitbox":
+                if object_property == 'hitbox':
                     crect_list = map(int, self.properties[object_property].split(','))
                     self.hitbox = pygame.Rect(crect_list)
         self.tile_id = tile_id
@@ -226,22 +228,22 @@ class GameObject(pygame.sprite.Sprite, object):
             #     tint_surface.fill(tint)
             #     surface.blit(tint_surface, (x, y))
         except IndexError:
-            print(str(self.animation_frame) + " " + str(len(self.images[self.current_key][key])))
+            LOG.error(
+                'Draw error: %s %s',
+                self.animation_frame,
+                len(self.images[self.current_key][key])
+            )
         self.updated = False
         self.updated_sprite = False
 
     def scale_to_view(self, scaling):
-        # self.updated = True
-        # print("Scaling")
+        LOG.debug('Scaling...')
         for image_list in self.images.keys():
             self.images[image_list][scaling] = []
             for image in xrange(0, len(self.images[image_list][0])):
                 self.images[image_list][scaling].append(pygame.transform.scale(self.images[image_list][0][image],
                     (int(self.images[image_list][0][image].get_width()*scaling[0]),
                      int(self.images[image_list][0][image].get_height()*scaling[1]))))
-                # self.images[image_list][0][image][scaling] = pygame.transform.scale(self.images[image_list][image],
-                #                                                                  (int(self.images[image_list][image].get_width()*scaling[0]),
-                #                                                                   int(self.images[image_list][image].get_height()*scaling[1])))
 
     def rotate(self, angle):
         self.angle += angle

@@ -1,14 +1,9 @@
-__author__ = 'brad'
 
 
 class State(object):
+
     def __init__(self):
         self.scenes = {}
-
-    # def __del__(self):
-    #     for key in self.scenes.keys():
-    #         del self.scenes[key]
-    #     del self.scenes
 
     def add_scene(self, key, scene):
         self.scenes[key] = scene

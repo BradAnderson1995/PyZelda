@@ -1,17 +1,14 @@
-__author__ = 'brad'
-
 import os
-import src.engine as engine  # import src.engine as engine
 import random
-
-RESOURCE_DIR = os.path.join(os.path.dirname(__file__),'../../resources/') + '/'
-SPRITE_DIR = RESOURCE_DIR + 'sprite/'
+from zelda import engine
+from zelda import SPRITE_DIR
 
 
 class AbstractEffect(engine.GameObject):
     def __init__(self, object_type):
         self.resource_manager = engine.ResourceManager()
-        self.effect_sheet = engine.Spritesheet(SPRITE_DIR + "Effects.png")
+        effect_path = os.path.join(SPRITE_DIR, 'Effects.png')
+        self.effect_sheet = engine.Spritesheet(effect_path)
         engine.GameObject.__init__(self, layer=100, object_type=object_type)
         self.animation_speed = 15
 
